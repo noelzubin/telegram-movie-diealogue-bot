@@ -1,6 +1,13 @@
 var request = require('request');
 var express = require('express');
 var rp = require('request-promise');
+var https = require('https');
+var fs = require('fs');
+
+var credentials = {
+    key: fs.readFileSync('YOURPRIVATE.key'),
+    cert: fs.readFileSync('YOURPUBLIC.pem')
+};
 
 var request = request.defaults({
     jar: true
@@ -53,7 +60,11 @@ app.get('/', function(req, res) {
 
 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
-})
+// app.listen(3000, function () {
+//     console.log('Example app listening on port 3000!')
+// })
  
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(8443, function(){
+    console.log('Example app listening on port 3000!');
+});
